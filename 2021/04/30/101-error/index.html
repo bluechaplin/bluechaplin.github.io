@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>如何避免101错误 | Coding Diary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="定义Too many SOQL queries  原因Apex在一个transaction里面做了很多限制，其中规定同步的SOQL queries不能超过100条 解决避免在一个loop里面做soql查询 因为apex trigger的逻辑是将数据分成200一批去执行触发器逻辑，所以在触发器里面对一些静态的数据查询，我们需要进行特殊处理，避免每批执行都会做查询  在Handler的静态代码块执行对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何避免101错误">
+<meta property="og:url" content="https://bluechaplin.github.io/2021/04/30/101-error/index.html">
+<meta property="og:site_name" content="Coding Diary">
+<meta property="og:description" content="定义Too many SOQL queries  原因Apex在一个transaction里面做了很多限制，其中规定同步的SOQL queries不能超过100条 解决避免在一个loop里面做soql查询 因为apex trigger的逻辑是将数据分成200一批去执行触发器逻辑，所以在触发器里面对一些静态的数据查询，我们需要进行特殊处理，避免每批执行都会做查询  在Handler的静态代码块执行对">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bluechaplin.github.io/.io//image-20210429161014257.png">
+<meta property="article:published_time" content="2021-04-30T07:37:08.000Z">
+<meta property="article:modified_time" content="2021-04-30T07:49:28.321Z">
+<meta property="article:author" content="Qiwen Chen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bluechaplin.github.io/.io//image-20210429161014257.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Coding Diary" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coding Diary</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Happy Coding</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://bluechaplin.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-101-error" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/04/30/101-error/" class="article-date">
+  <time class="dt-published" datetime="2021-04-30T07:37:08.000Z" itemprop="datePublished">2021-04-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/salesforce/">salesforce</a>►<a class="article-category-link" href="/categories/salesforce/apex/">apex</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      如何避免101错误
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>Too many SOQL queries</p>
+<p><img src="/.io//image-20210429161014257.png" alt="image-20210429161014257"></p>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><p>Apex在一个transaction里面做了很多限制，其中规定同步的SOQL queries不能超过100条</p>
+<h4 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h4><p>避免在一个loop里面做soql查询</p>
+<p>因为apex trigger的逻辑是将数据分成200一批去执行触发器逻辑，所以在触发器里面对一些静态的数据查询，我们需要进行特殊处理，避免每批执行都会做查询</p>
+<ul>
+<li><p>在Handler的静态代码块执行对静态变量的初始化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> with sharing <span class="class"><span class="keyword">class</span> <span class="title">ProjectHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> List&lt;Account&gt; accounts = <span class="keyword">new</span> List&lt;Account&gt;();</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">for</span>(Integer i = <span class="number">0</span>; i &lt; <span class="number">80</span>; i ++) &#123;</span><br><span class="line">            accounts.addAll([select id from Account limit <span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过一个单例对象进行数据查询，然后使用单例对象的变量去缓存数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> with sharing <span class="class"><span class="keyword">class</span> <span class="title">TriggerCache</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">TriggerCache</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 缓存数据初始化</span></span><br><span class="line">        <span class="keyword">for</span>(Integer i = <span class="number">0</span>; i &lt; <span class="number">80</span>; i ++) &#123;</span><br><span class="line">            <span class="keyword">this</span>.accounts.addAll([select id from Account limit <span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Account&gt; accounts = <span class="keyword">new</span> List&lt;Account&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> TriggerCache instance;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TriggerCache <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> TriggerCache();</span><br><span class="line">            <span class="keyword">return</span> instance;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> instance;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Account&gt; <span class="title">getAccounts</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.accounts;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ps：apex里面的单例跟java的不太一样，java的单例是靠jvm保证的，程序启动，jvm启动后，只会对一个类加载一次，但是apex里面的单例只在一个transaction里面有效</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bluechaplin.github.io/2021/04/30/101-error/" data-id="cko406k9o0001tkvscw7jflg7" data-title="如何避免101错误" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/salesforce/">salesforce</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/salesforce/apex/">apex</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/30/101-error/">如何避免101错误</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Qiwen Chen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

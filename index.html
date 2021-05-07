@@ -75,6 +75,175 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-apex-data" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/05/07/apex-data/" class="article-date">
+  <time class="dt-published" datetime="2021-05-07T02:44:49.000Z" itemprop="datePublished">2021-05-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/salesforce/">salesforce</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/05/07/apex-data/">Apex里面的数据操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id><a href="#" class="headerlink" title></a></h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bluechaplin.github.io/2021/05/07/apex-data/" data-id="ckodpur6v0002b4vscms88yk9" data-title="Apex里面的数据操作" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-apex-annotation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/05/06/apex-annotation/" class="article-date">
+  <time class="dt-published" datetime="2021-05-06T09:33:07.000Z" itemprop="datePublished">2021-05-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/salesforce/">salesforce</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/05/06/apex-annotation/">Apex注解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id="auraEnabled"><a href="#auraEnabled" class="headerlink" title="@auraEnabled"></a>@auraEnabled</h4><p>用于作为服务端的apex代码提供给lighting component（lwc和aura）调用，通过设置参数cacheable，eg: @AuraEnabled(cacheable=true)，可以让查询方法缓存数据，提高效率</p>
+<h4 id="deprecated"><a href="#deprecated" class="headerlink" title="@deprecated"></a>@deprecated</h4><p>标识方法已经过时</p>
+<h4 id="future"><a href="#future" class="headerlink" title="@future"></a>@future</h4><p>标识方法为一个异步的方法，方法返回值为void，类型为static，入参只能是基础类型或者数组、列表形式的基础类型</p>
+<h4 id="InvocableMethod"><a href="#InvocableMethod" class="headerlink" title="@InvocableMethod"></a>@InvocableMethod</h4><p>标识一个apex方法为可调用的，允许通过Rest Api进行描述式调用，或者在Process Builder中调用</p>
+<p><em>注意：一个类只能有一个方法被标注为此注解</em></p>
+<h4 id="isTest"><a href="#isTest" class="headerlink" title="@isTest"></a>@isTest</h4><p>标识测试类和测试方法</p>
+<h4 id="JsonAccess"><a href="#JsonAccess" class="headerlink" title="@JsonAccess"></a>@JsonAccess</h4><p>标识一个类是否可以被序列化或者反序列化，指定其范围</p>
+<h4 id="remoteAction"><a href="#remoteAction" class="headerlink" title="@remoteAction"></a>@remoteAction</h4><p>提供apex方法给visualforce页面的js调用</p>
+<h4 id="testSetup"><a href="#testSetup" class="headerlink" title="@testSetup"></a>@testSetup</h4><p>在测试类被此注解标识的方法会首先运行，不能有参数，没有返回值，通常用于测试类创建测试数据</p>
+<h4 id="TestVisible"><a href="#TestVisible" class="headerlink" title="@TestVisible"></a>@TestVisible</h4><p>用于标识私有的方法和变量，标识后，这些私有的属性在测试运行时能被允许访问</p>
+<h4 id="RestResource"><a href="#RestResource" class="headerlink" title="@RestResource"></a>@RestResource</h4><p>用于标识在类上面，标识改类作为一个rest资源</p>
+<ul>
+<li>映射相对于<a target="_blank" rel="noopener" href="https://instance.salesforce.com/services/apexrest/">https://instance.salesforce.com/services/apexrest/</a>.</li>
+<li>通配符*是被允许使用的</li>
+<li>区分大小写</li>
+<li>类必须被定义为global</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bluechaplin.github.io/2021/05/06/apex-annotation/" data-id="ckodpur6y0004b4vs3tdk9e9n" data-title="Apex注解" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-apex-keywords" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/05/06/apex-keywords/" class="article-date">
+  <time class="dt-published" datetime="2021-05-06T08:53:32.000Z" itemprop="datePublished">2021-05-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/salesforce/">salesforce</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/05/06/apex-keywords/">Apex关键字</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id="final"><a href="#final" class="headerlink" title="final"></a>final</h4><p>必须在定义的时候进行初始化，定义一个常量一般使用static final声明</p>
+<h4 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h4><p>判断变量的类型，同java</p>
+<p>eg:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Boolean result = o <span class="keyword">instanceof</span> Account;</span><br></pre></td></tr></table></figure>
+
+<h4 id="virtual"><a href="#virtual" class="headerlink" title="virtual"></a>virtual</h4><p>用于定义抽象类，类似java的abstract</p>
+<h4 id="with-sharing-without-sharing-inherite-sharing"><a href="#with-sharing-without-sharing-inherite-sharing" class="headerlink" title="with sharing, without sharing, inherite sharing"></a>with sharing, without sharing, inherite sharing</h4><p>用于定义代码执行时是否执行数据共享规则</p>
+<p>关于<code>with sharing</code>和<code>without sharing</code>的一些细节：</p>
+<ul>
+<li>对于一个方法的共享规则设定不是取决于它被调用的那个方法所在类，而是取决于它所定义的类设置的共享规则</li>
+<li>如果一个类没有被定义with sharing或者without sharing时，默认不会执行共享规则，除非它被另一个声明了with sharing的类的方法调用</li>
+<li>无论是内部类或者外部类都可以声明共享规则，共享规则作用在类的所有代码上</li>
+<li>内部类不继承所在外部类的共享规则声明</li>
+<li>字类会继承父类的共享规则设置</li>
+</ul>
+<p>关于<code>inherite sharing</code>的细节：</p>
+<ul>
+<li>声明为inherite sharing的类的方法在以下情形运行时会以with sharing的方式运行<ul>
+<li>Aura component controller</li>
+<li>Visualforce controller</li>
+<li>Apex REST service</li>
+<li>任何一个apex运行事务的入口</li>
+</ul>
+</li>
+<li>与without sharing的区别在于，如果声明为without sharing的类的方法作为事务入口，而不是作为被声明了with sharing的类的方法调用的话，是不会遵循共享规则的，而inherite sharing的类的方法在上一条的情形下是会遵循共享规则的</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bluechaplin.github.io/2021/05/06/apex-keywords/" data-id="ckodpur6z0005b4vs3n64dz2k" data-title="Apex关键字" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-trigger-context-variables" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/05/06/trigger-context-variables/" class="article-date">
@@ -128,7 +297,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bluechaplin.github.io/2021/05/06/trigger-context-variables/" data-id="ckocapfcv0000kovs97cx8y3s" data-title="Apex触发器上下文变量" class="article-share-link">分享</a>
+      <a data-url="https://bluechaplin.github.io/2021/05/06/trigger-context-variables/" data-id="ckodpur740009b4vsea9la5dl" data-title="Apex触发器上下文变量" class="article-share-link">分享</a>
       
       
       
@@ -185,7 +354,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bluechaplin.github.io/2021/04/30/custom-label/" data-id="cko47aesn000160vshcbw1pi5" data-title="自定义标签" class="article-share-link">分享</a>
+      <a data-url="https://bluechaplin.github.io/2021/04/30/custom-label/" data-id="ckodpur700006b4vshmzk18tc" data-title="自定义标签" class="article-share-link">分享</a>
       
       
       
@@ -237,7 +406,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bluechaplin.github.io/2021/04/30/custom-noyify/" data-id="cko47aesv000760vshdzkftis" data-title="自定义通知的使用" class="article-share-link">分享</a>
+      <a data-url="https://bluechaplin.github.io/2021/04/30/custom-noyify/" data-id="ckodpur730008b4vsb4hb6tv3" data-title="自定义通知的使用" class="article-share-link">分享</a>
       
       
       
@@ -293,7 +462,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://bluechaplin.github.io/2021/04/30/101-error/" data-id="cko47aesp000260vs2f0e99rc" data-title="如何避免101错误" class="article-share-link">分享</a>
+      <a data-url="https://bluechaplin.github.io/2021/04/30/101-error/" data-id="ckodpur6s0001b4vsh1un8t9a" data-title="如何避免101错误" class="article-share-link">分享</a>
       
       
       
@@ -343,19 +512,23 @@
       <ul>
         
           <li>
+            <a href="/2021/05/07/apex-data/">Apex里面的数据操作</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/06/apex-annotation/">Apex注解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/06/apex-keywords/">Apex关键字</a>
+          </li>
+        
+          <li>
             <a href="/2021/05/06/trigger-context-variables/">Apex触发器上下文变量</a>
           </li>
         
           <li>
             <a href="/2021/04/30/custom-label/">自定义标签</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/30/custom-noyify/">自定义通知的使用</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/30/101-error/">如何避免101错误</a>
           </li>
         
       </ul>
